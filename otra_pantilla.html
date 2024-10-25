@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reparaciones de Celulares</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Sistema de Reparación de Celulares</h2>
+    
+    <!-- Formulario para ingresar un teléfono -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Ingresar Teléfono
+        </div>
+        <div class="card-body">
+            <form id="formTelefono">
+                <div class="form-group">
+                    <label for="marca">Marca:</label>
+                    <input type="text" class="form-control" id="marca" required>
+                </div>
+                <div class="form-group">
+                    <label for="numeroSerie">Número de Serie:</label>
+                    <input type="text" class="form-control" id="numeroSerie" required>
+                </div>
+                <div class="form-group">
+                    <label for="imei">IMEI:</label>
+                    <input type="text" class="form-control" id="imei" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Ingresar Teléfono</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla para mostrar el estado de los teléfonos -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Estado de Teléfonos en Reparación
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Marca</th>
+                        <th>IMEI</th>
+                        <th>Diagnóstico</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="listaTelefonos">
+                    <!-- Aquí se mostrarán los teléfonos -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

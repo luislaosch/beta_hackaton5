@@ -30,25 +30,25 @@ const Reserva = function () //a
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            // const {error, paymentMethod} = await stripe.createPaymentMethod({
-            //     type: 'card',
-            //     card: cardElement,
-            // });
+            const {error, paymentMethod} = await stripe.createPaymentMethod({
+                type: 'card',
+                card: cardElement,
+            });
 
-            // if (error) {
-            //     // Mostrar error
-            //     document.getElementById('payment-result').innerText = error.message;
-            // } else {
-            //     // Enviar paymentMethod.id a tu servidor
-            //     fetch("http://localhost:3000/create-payment-intent", {
-            //         method: "POST",
-            //         headers: {'Content-Type': 'application/json'}, 
-            //         body: JSON.stringify({amount:200})
-            //       }).then(res => {
-            //         console.log("Request complete! response:", res);
-            //       });
-            //     document.getElementById('payment-result').innerText = 'Pago exitoso: ' + paymentMethod.id;
-            // }
+            if (error) {
+                // Mostrar error
+                document.getElementById('payment-result').innerText = error.message;
+            } else {
+                // Enviar paymentMethod.id a tu servidor
+                fetch("http://localhost:3000/create-payment-intent", {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({amount:200})
+                  }).then(res => {
+                    console.log("Request complete! response:", res);
+                  });
+                document.getElementById('payment-result').innerText = 'Pago exitoso: ' + paymentMethod.id;
+            }
         });
     }
 
@@ -157,7 +157,7 @@ const Reserva = function () //a
 }();
 
 
-class Reservas {
+class Reparaciones {
     constructor(origen, destino, fechaIda, fechaVuelta) {
         this.origen = origen;
         this.destino = destino;
@@ -174,7 +174,7 @@ class Reservas {
     }
 }
 
-class Pasajeros{
+class celulares{
     constructor(nombre, apellido,documento){
         this.nombre = nombre;
         this.apellido = apellido;
@@ -182,17 +182,12 @@ class Pasajeros{
     }
 }
 
-class Aviones {
-    constructor(matricula, modelo, nroAsientos, capacidadMinima, costoVuelo) {
-        this.matricula = matricula;
+class Tecnicos {
+    constructor(nombreCompleto, modelo, nroAsientos, capacidadMinima, costoVuelo) {
+        this.nombreCompleto = nombreCompleto;
         this.modelo = modelo;
-        this.nroAsientos = nroAsientos;
-        this.capacidadMinima = capacidadMinima;
-        this.costoVuelo = costoVuelo;
-        
-        this.arrPasajeros = [];
-        this.habilitado = false;
-        this.reservado = 0;
+
+        this.disponible = false;
 
     }
     agregarPasajeros(pasajero) {
