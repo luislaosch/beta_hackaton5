@@ -43,6 +43,9 @@ class repuesto{
 class Reparacion{
     constructor(codigo, autorizacionEscrita,fecha, estado , id_cliente,id_equipo,id_respuesto, ){
         this.codigo=codigo;
+        this.fecha=fecha;
+        this.estado=estado;
+        this.autorizacionEscrita=autorizacionEscrita;
 
     }
 }
