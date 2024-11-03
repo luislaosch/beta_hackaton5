@@ -70,6 +70,35 @@
             </table>
         </div>
     </div>
+
+
+    <!-- Tabla para mostrar los atendidos -->
+    <div class="card mt-4">
+        <div>
+
+        </div>
+        <div class="card-header">
+            Teléfonos en Revisión
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Equipo</th>
+                        <th>Diagnóstico</th>
+                        <th>Estado</th>
+                        <th>Técnico</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody id="listAtendidos">
+                    <!-- Aquí se mostrarán los teléfonos revisados -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 </div>
 
 <!-- Modal para ingresar cliente y diagnóstico -->
@@ -114,12 +143,19 @@
                     <input type="text" class="form-control" id="tecnico" required>
                 </div> -->
                 <div class="form-group">
-                    <label for="autorizacion">Autorización:</label>
-                    <input type="text" class="form-control" id="diagnostico" required>
+                    <label for="autorizacion">Autorización:</label><br>
+                    <input type="radio" id="autorizacionTrue" name="autorizacion" value=1 />
+                    <label for="autorizacionTrue" checked>Válida</label><br>
+              
+                    <input type="radio" id="autorizacionFalse" name="autorizacion" value=0 />
+                    <label for="autorizacionFalse">No válida</label><br>
+
+                    <!-- <input type="text" class="form-control" id="diagnostico" required> -->
                 </div>
                 <div class="form-group">
-                    <label for="diagnostico">Importe de la Revisión:</label>
-                    <input type="text" class="form-control" id="diagnostico" required>
+                    <span id="lebelMontoRevision"> Monto de la Revisión: S/.10.00 </span>
+                    <!-- <label for="autorizacion" id="lebelMontoRevision">Importe :</label> -->
+                    <input id="pagoRevision" type="number" class="form-control" required>
                 </div>
                 <!-- <div class="form-group">
                     <label for="diagnostico">Diagnóstico:</label>
@@ -127,7 +163,7 @@
                 </div> -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="guardarDiagnostico">Guardar</button>
+                <button type="button" class="btn btn-primary" id="guardarAutorizacion">Guardar</button>
             </div>
         </div>
     </div>

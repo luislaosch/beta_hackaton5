@@ -1,9 +1,8 @@
 let repotadosImei = ['imeiReportado1', 'imeiReportado2', 'imeiReportado3', 'imeiReportado4', 'imeiReportado5'];
 let reportadosNserie = ['nserieReportado1', 'nserieReportado2', 'nserieReportado3', 'nserieReportado4', 'nserieReportado6'];
 let revisados = [];
-let atendidos=[];
-let tecnicos=[];
-
+let atendidos = [];
+let tecnicos = [];
 
 class Telefono {
     constructor(marca, numeroSerie, imei, modelo, so) {
@@ -21,12 +20,20 @@ class Telefono {
 }
 
 class Tecnico {
-    constructor(nombre , skillAndroid, skillIos){
+    constructor(nombre, skillAndroid, skillIos) {
         this.nombre = nombre;
         this.skillAndroid = skillAndroid;
         this.skillIos = skillIos;
     }
 }
+
+const tecnico1 = new Tecnico("Tec1", true, false);
+const tecnico2 = new Tecnico("Tec2", false, true);
+const tecnico3 = new Tecnico("Tec3", true, true);
+
+tecnicos.push(tecnico1);
+tecnicos.push(tecnico2);
+tecnicos.push(tecnico3);
 
 class Revisado {
     constructor(telefono, cliente, diagnostico) {
@@ -39,7 +46,7 @@ class Revisado {
         const listaRevisados = document.getElementById("listaRevisados");
         listaRevisados.innerHTML = "";
 
-        revisados.forEach(revisado => {
+        revisados.forEach((revisado, index) => {
             const fila = document.createElement("tr");
             fila.innerHTML = `
                 <td>${revisado.cliente}</td>
@@ -49,47 +56,41 @@ class Revisado {
                 <td>${revisado.diagnostico}</td>
                 <td>${revisado.telefono.estado}</td>
                 <td>
-                    <button class="btn btn-primary" >verificar</button>
-                    
+                    <button class="btn btn-primary" onclick="accionRevisado(${index})">Verificar</button>
                 </td>
-                
             `;
             listaRevisados.appendChild(fila);
         });
-        // onclick="atendidos(${index})"
-        //<button id="verificar" class="btn btn-primary" data-index="${index}">verificar</button>
-        // <button class="btn btn-primary" onclick="accionRevisado(${index})">verificar</button>
     }
 }
 
-class Atendidos{
-    constructor(revisado, tecnico, autorizacion, montoRevision, pagoRevision){
+class Atendidos {
+    constructor(revisado, tecnico, autorizacion, montoRevision, pagoRevision) {
         this.revisado = revisado;
-        this.tecnico  = tecnico ;
+        this.tecnico = tecnico;
         this.autorizacion = autorizacion;
         this.montoRevision = montoRevision;
         this.pagoRevision = pagoRevision;
     }
+}
 
-    
+function mostrarAtendidos() {
+    const listaAtendidos = document.getElementById("listAtendidos");
+    listaAtendidos.innerHTML = "";
 
-    mostarAtendidos() {
-        const listaRevisados = document.getElementById("listaAtenciones");
-        listaRevisados.innerHTML = "";
-
-        atendidos.forEach(atendidos => {
-            const fila = document.createElement("tr");
-            fila.innerHTML = `
-                <td>${atendidos.revisado.cliente}</td>
-                <td>${atendidos.revisado.telefono.marca}</td>
-                <td>${atendidos.revisado.telefono.modelo}</td>
-                <td>${atendidos.revisado.diagnostico}</td>
-                <td>${atendidos.revisado.telefono.estado}</td>
-            `;
-            listaRevisados.appendChild(fila);
-        });
-    }
-
+    atendidos.forEach((atendido, index) => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+            <td>${atendido.revisado.telefono.marca} : ${atendido.revisado.telefono.modelo}</td>
+            <td>${atendido.revisado.diagnostico}</td>
+            <td>${atendido.revisado.telefono.estado}</td>
+            <td>${atendido.tecnico.nombre}</td>
+            <td>
+                <button class="btn btn-primary" onclick="actualizarEstado(${index})">Actualizar</button>
+            </td>
+        `;
+        listaAtendidos.appendChild(fila);
+    });
 }
 
 document.getElementById("formTelefono").addEventListener("submit", function (registrarTelefono) {
@@ -103,11 +104,9 @@ document.getElementById("formTelefono").addEventListener("submit", function (reg
 
     const telefono = new Telefono(marca, numeroSerie, imei, modelo, so);
 
-    // Verificar si el teléfono está en los reportes
     if (repotadosImei.includes(imei) || reportadosNserie.includes(numeroSerie)) {
         alert("El teléfono está reportado y no puede ser aceptado.");
     } else {
-        // Mostrar el modal para ingresar cliente y diagnóstico
         $("#modalDiagnostico").modal("show");
 
         document.getElementById("guardarDiagnostico").onclick = function () {
@@ -120,22 +119,41 @@ document.getElementById("formTelefono").addEventListener("submit", function (reg
 
             revisado.mostrarRevisados();
             $("#modalDiagnostico").modal("hide");
-            e.target.reset();
+            registrarTelefono.target.reset();
         };
     }
 });
 
-// function atendidos() {
-//     // Aquí puedes definir la acción que deseas realizar con el índice 'index'
-//     // Por ejemplo, eliminar el elemento o mostrar más detalles
-//     // console.log(`Acción en el equipo revisado con índice: ${index}`);
-//     console.log("indice");
-// }
+function elegirTecnico(auxrevisado) {
+    if (auxrevisado.telefono.so === "Android") {
+        return tecnicos.find(tecnico => tecnico.skillAndroid);
+    } else {
+        return tecnicos.find(tecnico => tecnico.skillIos);
+    }
+}
 
-// document.getElementById("verificar").addEventListener("click",(atendidos) => {
-//     atendidos.preventDefault();
-//     // const index = document.getElementById("Revisar").getAttribute("data-index");
-//     // console.log("Índice del teléfono:", index);
-//     console.log("Índice del teléfono:");
-// })
+function accionRevisado(index) {
+    const montoRevision = 10.0;
+    const auxrevisado = revisados[index];
+    const tecnico = elegirTecnico(auxrevisado);
 
+    $("#modalAtenciones").modal("show");
+    document.getElementById("guardarAutorizacion").onclick = function () {
+        const autorizacion = document.querySelector('input[name="autorizacion"]:checked')?.value;
+        const pagoRevision = parseFloat(document.getElementById("pagoRevision").value);
+
+        if (autorizacion === "1" && pagoRevision >= montoRevision * 0.5) {
+            auxrevisado.telefono.actualizarEstado("En Atención");
+            const atendido = new Atendidos(auxrevisado, tecnico, autorizacion, montoRevision, pagoRevision);
+            atendidos.push(atendido);
+            mostrarAtendidos();
+        } else {
+            alert("Autorización no válida o pago insuficiente.");
+        }
+        $("#modalAtenciones").modal("hide");
+    };
+}
+
+function actualizarEstado(index) {
+    console.log("Actualizar estado de atendido con índice:", index);
+}
